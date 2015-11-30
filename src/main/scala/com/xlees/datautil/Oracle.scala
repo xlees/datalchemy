@@ -1,4 +1,4 @@
-package org.spark.realtime.util
+package com.xlees.datautil
 
 import java.util.Properties
 import java.io.FileInputStream
@@ -61,25 +61,25 @@ object Oracle {
         return jsonArray
     }
     
-    def query(sql: String): Try[List[Map[String,Any]]] = {    // 需要try
+    def query(sql: String): Try[List[Map[String,Option[Any]]]] = {    // 需要try
         
         return Try {
             val stmt = getConnection.createStatement
             val rs = stmt.executeQuery(sql)
             
-            val ret = new ListBuffer[Map[String,Any]]()
+            val ret = new ListBuffer[Map[String,Option[Any]]]()
             val metaData = rs.getMetaData
             val cols = metaData.getColumnCount
             
             rs.setFetchSize(2000)       // default 10, improve perfermance.
             while (rs.next()) {
                 
-                var obj = Map[String,Any]()
+                val obj = scala.collection.mutable.Map[String,Option[Any]]()
                 for (i <- 0 until cols) {
-                    obj += metaData.getColumnLabel(i+1).toLowerCase -> rs.getObject(i+1)
+                    obj += metaData.getColumnLabel(i+1).toLowerCase -> Option(rs.getObject(i+1))
                 }
                 
-                ret += obj
+                ret += obj.toMap
             }
             
             rs.close
