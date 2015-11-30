@@ -1,4 +1,4 @@
-package com.xlees.datalchemy
+package com.xlees.sample
 
 /**
  * @author ${user.name}
