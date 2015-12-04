@@ -6,10 +6,10 @@ package com.xlees.sample
 
 import org.json4s._
 import org.json4s.JsonDSL._
-import org.json4s.native.JsonMethods._
+import org.json4s.jackson.JsonMethods._
 import org.json4s.Xml.{toJson, toXml}
 import java.util.Date
-import org.json4s.native.Serialization._
+import org.json4s.jackson.Serialization._
 
 case class Project(name: String, startDate: Date, lang: Option[Language], teams: List[Team])
 case class Language(name: String, version: Double)
@@ -22,14 +22,14 @@ object JsonProcess {
     implicit val formats = DefaultFormats
     case class Mailserver(url: String, username: String, password: String)
 
-    val json = parse(
-        """
-        { 
-          "url": "imap.yahoo.com",
-          "username": "myusername",
-          "password": "mypassword",
-        }
-        """)
+//    val json = parse(
+//        """
+//        { 
+//          "url": "imap.yahoo.com",
+//          "username": "myusername",
+//          "password": "mypassword",
+//        }
+//        """)
         
     val personDSL =
         ("person" ->
@@ -49,7 +49,9 @@ object JsonProcess {
         println(Extraction.decompose(l2))
         
         val tmp1 = Map("flow"->Option(None), "tindex"->Some(1.2))
-        println(write(Extraction.decompose(tmp1)))
+//        println(write(Extraction.decompose(tmp1)))
+        val json2 = Extraction.decompose(tmp1)
+        println(json2)
         
         
         val tmp = ("name"->"llll") ~ ("addr"->Set(3,4,5)) ~ ("flow"->(None:Option[Int]))
@@ -69,6 +71,7 @@ object JsonProcess {
         val m = Map(e1->90,e2->80)
         println(m)
         
+        val json = parse(""" { "numbers" : [1, 2, 3, 4] } """)
         print(json.getClass)
         val server = json.extract[Mailserver]
         println(server.getClass)

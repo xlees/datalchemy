@@ -1,19 +1,15 @@
 package com.xlees.sample
 
-/**
- * @author xiang
- */
-
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+import scala.util.Failure
 import akka.actor.Actor
-import akka.actor.Props
-import akka.event.Logging
 import akka.actor.ActorLogging
 import akka.actor.ActorSystem
-import scala.concurrent._
-import scala.concurrent.ExecutionContext.Implicits.global
-import akka.pattern.{pipe,ask}
-import scala.util.Try
-import scala.util.Failure
+import akka.actor.Props
+import akka.actor.actorRef2Scala
+import akka.pattern.pipe
+import com.typesafe.config.ConfigFactory
 
 case class StatResult(r: Int)
 
@@ -63,7 +59,11 @@ class MyActor extends Actor {
 //        case msg @ _ =>
 //            println("error may happen??"+msg.getClass.toString+":\n"+msg)
             
-        case value: String => println(value)
+        case value: String => 
+            println("string: "+value)
+            val map = scala.collection.mutable.Map[Short,Integer]()
+            map(78) = 1
+//            println(map(90))
         
         case _ => println("received unknown message")
     }
@@ -90,13 +90,15 @@ object AkkaSample {
         println("akka, actor.")
         sayHello
 
+//        val conf = ConfigFactory.parseResources("/dev.conf")
         val system = ActorSystem("MySystem")
+        println("config version: "+system.settings.ConfigVersion)
 //        val greeter = system.actorOf(Props[GreetingActor], name = "greeter")
         val greeter = system.actorOf(Props[MyActor], name = "my-actor")
         
 //        greeter ! Greeting("Charlie Parker")
         greeter ! "start"
-        greeter ! "calculate"
+//        greeter ! "calculate"
         
 //        system.shutdown()
     }
