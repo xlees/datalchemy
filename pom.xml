@@ -59,17 +59,17 @@
 		<groupId>org.apache.spark</groupId>
 		<artifactId>spark-core_2.10</artifactId>
 		<version>1.5.2</version>
-		<exclusions>  
-	        <!-- <exclusion>
+		<!-- <exclusions>  
+	        <exclusion>
 	            <artifactId>com.typesafe.akka</artifactId>  
 	            <groupId>akka-actor_2.10</groupId>  
-	        </exclusion> -->
+	        </exclusion>
 	        
 	        <exclusion>
 	            <artifactId>org.json4s</artifactId>  
 	            <groupId>json4s-jackson_2.10</groupId>  
 	        </exclusion>
-	    </exclusions>  
+	    </exclusions>   -->
 	</dependency>
 	
 	<dependency>
