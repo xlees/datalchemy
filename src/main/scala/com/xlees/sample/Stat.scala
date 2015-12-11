@@ -10,7 +10,7 @@ object Stat {
         val conf = new SparkConf().setAppName("BigData")
         val sc = new SparkContext(conf)
         
-        val fpath = getClass.getClassLoader.getResource("data").getPath
+        val fpath = getClass.getResource("/data").getPath
         println("fpath= "+fpath)
         
         val data = sc.textFile(fpath, 100)
