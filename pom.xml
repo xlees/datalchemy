@@ -1,281 +1,248 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  
-  <groupId>com.xlees</groupId>
-  <artifactId>datalchemy</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  
-  <name>${project.artifactId}</name>
-  <description>My wonderfull scala app</description>
-  <inceptionYear>2010</inceptionYear>
-  <licenses>
-    <license>
-      <name>My License</name>
-      <url>http://....</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <properties>
-  	<jdk.version>1.7</jdk.version>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
-    <encoding>UTF-8</encoding>
-    <scala.tools.version>2.10</scala.tools.version>
-    <scala.version>2.10.5</scala.version>
-  </properties>
+	<groupId>com.xlees</groupId>
+	<artifactId>datalchemy</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 
-  <dependencies>
-	
-	<dependency>
-		<artifactId>json4s-jackson_2.10</artifactId>
-		<groupId>org.json4s</groupId>
-		<version>3.3.0</version>
-		<exclusions>
-			<exclusion>
-				<artifactId>jackson-databind</artifactId>
-				<groupId>com.fasterxml.jackson.core</groupId>
-			</exclusion>
-		</exclusions>
-	</dependency>
-		
-	<dependency>    
-        <groupId>com.oracle</groupId>    
-        <artifactId>ojdbc14</artifactId>    
-        <version>10.2.0.4.0</version>
-    </dependency>
-   
-	
-	<!--  big data jars -->
-	<dependency>
-		<groupId>org.apache.kafka</groupId>
-		<artifactId>kafka_2.10</artifactId>
-		<version>0.8.2.0</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>com.alibaba</groupId>
-		<artifactId>fastjson</artifactId>
-		<version>1.2.6</version>
-	</dependency>
-    
-    <dependency>
-		<groupId>com.rabbitmq</groupId>
-		<artifactId>amqp-client</artifactId>
-		<version>3.5.6</version>
-	</dependency>
+	<name>${project.artifactId}</name>
+	<description>My wonderfull scala app</description>
+	<inceptionYear>2010</inceptionYear>
+	<licenses>
+		<license>
+			<name>My License</name>
+			<url>http://....</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
-	<dependency>
-		<groupId>org.apache.spark</groupId>
-		<artifactId>spark-core_2.10</artifactId>
-		<version>1.5.2</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>org.apache.spark</groupId>
-		<artifactId>spark-streaming_2.10</artifactId>
-		<version>1.5.2</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>org.apache.spark</groupId>
-		<artifactId>spark-graphx_2.10</artifactId>
-		<version>1.5.2</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>org.apache.spark</groupId>
-		<artifactId>spark-streaming-kafka_2.10</artifactId>
-		<version>1.5.2</version>
-	</dependency>
-	
-	<dependency>
-		<groupId>org.apache.hbase</groupId>
-		<artifactId>hbase-client</artifactId>
-		<version>1.0.1</version>
-	</dependency>
+	<properties>
+		<jdk.version>1.7</jdk.version>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<encoding>UTF-8</encoding>
+		<scala.tools.version>2.10</scala.tools.version>
+		<scala.version>2.10.5</scala.version>
+	</properties>
 
-	<dependency>
-		<groupId>org.apache.hbase</groupId>
-		<artifactId>hbase-server</artifactId>
-		<version>1.0.1</version>
-	</dependency>
+	<dependencies>
+		<dependency>
+		    <groupId>jdk.tools</groupId>
+		    <artifactId>jdk.tools</artifactId>
+		    <version>1.7</version>
+		    <scope>system</scope>
+		    <systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
+		</dependency>
 
-	
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${scala.version}</version>
-    </dependency>
+		<dependency>
+			<artifactId>json4s-jackson_2.10</artifactId>
+			<groupId>org.json4s</groupId>
+			<version>3.3.0</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jackson-databind</artifactId>
+					<groupId>com.fasterxml.jackson.core</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
-    <!-- Test -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.specs2</groupId>
-      <artifactId>specs2_${scala.tools.version}</artifactId>
-      <version>1.13</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_${scala.tools.version}</artifactId>
-      <version>2.0.M6-SNAP8</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.4.0</version>
+		</dependency>
 
-  <build>
-    <sourceDirectory>src/main/scala</sourceDirectory>
-    <testSourceDirectory>src/test/scala</testSourceDirectory>
-    
-    <plugins>
-      <!-- Set a compiler level -->
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<version>3.3</version>
-			<configuration>
-				<source>${jdk.version}</source>
-				<target>${jdk.version}</target>
-				<encoding>UTF8</encoding> 
-			</configuration>
-		</plugin>
-			
-      <!-- download sources -->
-	  <plugin>
-	       <groupId>org.apache.maven.plugins</groupId>
-	       <artifactId>maven-eclipse-plugin</artifactId>
-	       <version>2.10</version>
-	       <configuration>
-	         <downloadSources>true</downloadSources>
-	         <downloadJavadocs>true</downloadJavadocs>
-	       </configuration>
-	  </plugin>
-	  
-	  <plugin>  
-	    <groupId>org.apache.maven.plugins</groupId>  
-	    <artifactId>maven-shade-plugin</artifactId>  
-	    <version>2.4.2</version>  
-	    <executions>  
-	        <execution>  
-	            <phase>package</phase>  
-	            <goals>  
-	                <goal>shade</goal>  
-	            </goals>  
-	            <configuration>
-	            	<minimizeJar>true</minimizeJar>
 
-	            	<relocations>
-					    <relocation>
-					      <pattern>org.json4s</pattern>
-					      <shadedPattern>com.xlees.shaded.json4s</shadedPattern>
-					      
-					      <!-- <excludes>
-					        <exclude>org.company.package.main.Extras</exclude>
-					        <exclude>org.company.package.util.*</exclude>
-					      </excludes> -->
-					    </relocation>
-					    
-<!-- 					    <relocation> -->
-<!-- 					      <pattern>com.fasterxml.jackson.databind</pattern> -->
-<!-- 					      <shadedPattern>com.xlees.shaded.com.fasterxml.jackson.databind</shadedPattern> -->
-<!-- 					    </relocation> -->
-					</relocations>
-  
-	            	<artifactSet>
-		                <excludes>
-<!-- 		                  <exclude>com.oracle:ojdbc14</exclude> -->
-<!-- 		                  <exclude>jmock:*</exclude> -->
-<!-- 		                  <exclude>*:xml-apis</exclude> -->
-<!-- 		                  <exclude>org.apache.maven:lib:tests</exclude> -->
-<!-- 		                  <exclude>log4j:log4j:jar:</exclude> -->
-<!-- 		                  <exclude>org.apache.kafka:kafka_2.10</exclude> -->
-		                </excludes>
-		            </artifactSet>
-              
-	            	<filters>
-	            		<!-- <filter>
-		                   <artifact>com.oracle:ojdbc14</artifact>
-		                   <includes>
-		                       <include>**</include>
-		                   </includes>
-		                </filter> -->
-		                
-		                <filter>
-	                       <artifact>log4j:log4j</artifact>
-	                       <includes>
-	                           <include>**</include>
-	                       </includes>
-	                    </filter>
-	                    <filter>
-	                       <artifact>commons-logging:commons-logging</artifact>
-	                       <includes>
-	                           <include>**</include>
-	                       </includes>
-	                    </filter>
-                
-		                <filter>
-		                  <artifact>*:*</artifact>
-		                  <excludes>
-		                    <exclude>META-INF/*.SF</exclude>
-		                    <exclude>META-INF/*.DSA</exclude>
-		                    <exclude>META-INF/*.RSA</exclude>
-		                  </excludes>
-		                </filter>
-		            </filters>
-              
-	                <transformers>
-	                    <!-- <transformer  
-	                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">  
-	                        <resource>META-INF/spring.handlers</resource>  
-	                    </transformer>  -->
-	                    
-	                    <transformer  
-	                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">  
-	                        <mainClass>com.xlees.sample.NoneSample</mainClass>  
-	                    </transformer>  
-	                    
-	                    <!-- <transformer  
-	                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">  
-	                        <resource>META-INF/spring.schemas</resource>  
-	                    </transformer>   -->
-	                </transformers>  
-	            </configuration>  
-	        </execution>  
-	    </executions>  
-	</plugin>  
-	  
-      <!-- <plugin>
-      	  <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.6</version>
-          <configuration>
-              <archive>
-                  <manifest>
-                      <mainClass>com.xlees.sample.NoneSample</mainClass>
-                  </manifest>
-              </archive>
-              <descriptorRefs>
-                  <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
-          </configuration>
-          <executions>
-			  <execution>
-				<id>make-assembly</id>
-             	bind to the packaging phase
-				<phase>package</phase> 
-				<goals>
-					<goal>single</goal>
-				</goals>
-			  </execution>
-		  </executions>
-      </plugin> -->
-      
-    </plugins>
-  </build>
+		<!-- big data jars -->
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.10</artifactId>
+			<version>0.8.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
+			<version>3.5.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-core_2.10</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming_2.10</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-graphx_2.10</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming-kafka_2.10</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hbase</groupId>
+			<artifactId>hbase-client</artifactId>
+			<version>1.0.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hbase</groupId>
+			<artifactId>hbase-server</artifactId>
+			<version>1.0.1.1</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+
+		<!-- Test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.specs2</groupId>
+			<artifactId>specs2_${scala.tools.version}</artifactId>
+			<version>1.13</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.scalatest</groupId>
+			<artifactId>scalatest_${scala.tools.version}</artifactId>
+			<version>2.0.M6-SNAP8</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src/main/scala</sourceDirectory>
+		<testSourceDirectory>src/test/scala</testSourceDirectory>
+
+		<plugins>
+			<!-- Set a compiler level -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<encoding>UTF8</encoding>
+				</configuration>
+			</plugin>
+
+			<!-- download sources -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.10</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.2</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						
+						<configuration>
+							<minimizeJar>true</minimizeJar>
+
+							<relocations>
+								<relocation>
+									<pattern>org.json4s</pattern>
+									<shadedPattern>com.xlees.shaded.json4s</shadedPattern>
+
+									<!-- <excludes> <exclude>org.company.package.main.Extras</exclude> 
+										<exclude>org.company.package.util.*</exclude> </excludes> -->
+								</relocation>
+
+								<!-- <relocation> -->
+								<!-- <pattern>com.fasterxml.jackson.databind</pattern> -->
+								<!-- <shadedPattern>com.xlees.shaded.com.fasterxml.jackson.databind</shadedPattern> -->
+								<!-- </relocation> -->
+							</relocations>
+
+							<artifactSet>
+								<excludes>
+									<!-- <exclude>com.oracle:ojdbc14</exclude> -->
+									<!-- <exclude>jmock:*</exclude> -->
+									<!-- <exclude>*:xml-apis</exclude> -->
+									<!-- <exclude>org.apache.maven:lib:tests</exclude> -->
+									<!-- <exclude>log4j:log4j:jar:</exclude> -->
+									<!-- <exclude>org.apache.kafka:kafka_2.10</exclude> -->
+								</excludes>
+							</artifactSet>
+
+							<filters>
+								<filter>
+									<artifact>log4j:log4j</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+								<filter>
+									<artifact>commons-logging:commons-logging</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+									</excludes>
+								</filter>
+							</filters>
+
+							<transformers>
+								<!-- <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer"> 
+									<resource>META-INF/spring.handlers</resource> </transformer> -->
+
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>com.xlees.sample.NoneSample</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
 </project>

@@ -10,7 +10,13 @@ object Stat {
         val conf = new SparkConf().setAppName("BigData")
         val sc = new SparkContext(conf)
         
-        val fpath = getClass.getResource("/data").getPath
+        val path = getClass.getProtectionDomain().getCodeSource().getLocation().getPath()
+        println("path="+path)
+        
+        val root = getClass.getClassLoader.getResource(".").getPath
+        println("root="+root+"\n")
+        
+        val fpath = getClass.getClassLoader.getResource("data").getPath
         println("fpath= "+fpath)
         
         val data = sc.textFile(fpath, 100)
@@ -20,7 +26,9 @@ object Stat {
 //        
         println("num of data: "+cnt)
         
-        data.take(5).foreach(println)
+        Thread.sleep(5)
+        
+//        data.take(5).foreach(println)
         
         sc.stop()
     }
