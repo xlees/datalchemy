@@ -189,7 +189,7 @@
   
 	            	<artifactSet>
 		                <excludes>
-		                  <exclude>com.oracle:ojdbc14</exclude>
+<!-- 		                  <exclude>com.oracle:ojdbc14</exclude> -->
 <!-- 		                  <exclude>jmock:*</exclude> -->
 <!-- 		                  <exclude>*:xml-apis</exclude> -->
 <!-- 		                  <exclude>org.apache.maven:lib:tests</exclude> -->
@@ -205,6 +205,19 @@
 		                       <include>**</include>
 		                   </includes>
 		                </filter> -->
+		                
+		                <filter>
+	                       <artifact>log4j:log4j</artifact>
+	                       <includes>
+	                           <include>**</include>
+	                       </includes>
+	                    </filter>
+	                    <filter>
+	                       <artifact>commons-logging:commons-logging</artifact>
+	                       <includes>
+	                           <include>**</include>
+	                       </includes>
+	                    </filter>
                 
 		                <filter>
 		                  <artifact>*:*</artifact>
