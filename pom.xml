@@ -31,6 +31,12 @@
 		<artifactId>json4s-jackson_2.10</artifactId>
 		<groupId>org.json4s</groupId>
 		<version>3.3.0</version>
+		<exclusions>
+			<exclusion>
+				<artifactId>jackson-databind</artifactId>
+				<groupId>com.fasterxml.jackson.core</groupId>
+			</exclusion>
+		</exclusions>
 	</dependency>
 		
 	<dependency>    
@@ -63,24 +69,6 @@
 		<groupId>org.apache.spark</groupId>
 		<artifactId>spark-core_2.10</artifactId>
 		<version>1.5.2</version>
-		<exclusions>
-			<exclusion>
-				<artifactId>json4s-jackson_2.10</artifactId>
-				<groupId>org.json4s</groupId>
-			</exclusion>
-			<exclusion>
-				<artifactId>jackson-annotations</artifactId>
-				<groupId>com.fasterxml.jackson.core</groupId>
-			</exclusion>
-			<exclusion>
-				<artifactId>jackson-core-asl</artifactId>
-				<groupId>org.codehaus.jackson</groupId>
-			</exclusion>
-			<exclusion>
-				<artifactId>jackson-databind</artifactId>
-				<groupId>com.fasterxml.jackson.core</groupId>
-			</exclusion>
-		</exclusions>
 	</dependency>
 	
 	<dependency>
@@ -94,6 +82,7 @@
 		<artifactId>spark-graphx_2.10</artifactId>
 		<version>1.5.2</version>
 	</dependency>
+	
 	<dependency>
 		<groupId>org.apache.spark</groupId>
 		<artifactId>spark-streaming-kafka_2.10</artifactId>
@@ -103,14 +92,14 @@
 	<dependency>
 		<groupId>org.apache.hbase</groupId>
 		<artifactId>hbase-client</artifactId>
-		<version>1.1.2</version>
+		<version>1.0.1</version>
 	</dependency>
 
-	<!-- <dependency>
+	<dependency>
 		<groupId>org.apache.hbase</groupId>
 		<artifactId>hbase-server</artifactId>
-		<version>1.1.2</version>
-	</dependency> -->
+		<version>1.0.1</version>
+	</dependency>
 
 	
     <dependency>
@@ -178,7 +167,55 @@
 	            <goals>  
 	                <goal>shade</goal>  
 	            </goals>  
-	            <configuration>  
+	            <configuration>
+	            	<minimizeJar>true</minimizeJar>
+
+	            	<relocations>
+					    <relocation>
+					      <pattern>org.json4s</pattern>
+					      <shadedPattern>com.xlees.shaded.json4s</shadedPattern>
+					      
+					      <!-- <excludes>
+					        <exclude>org.company.package.main.Extras</exclude>
+					        <exclude>org.company.package.util.*</exclude>
+					      </excludes> -->
+					    </relocation>
+					    
+<!-- 					    <relocation> -->
+<!-- 					      <pattern>com.fasterxml.jackson.databind</pattern> -->
+<!-- 					      <shadedPattern>com.xlees.shaded.com.fasterxml.jackson.databind</shadedPattern> -->
+<!-- 					    </relocation> -->
+					</relocations>
+  
+	            	<artifactSet>
+		                <excludes>
+		                  <exclude>com.oracle:ojdbc14</exclude>
+<!-- 		                  <exclude>jmock:*</exclude> -->
+<!-- 		                  <exclude>*:xml-apis</exclude> -->
+<!-- 		                  <exclude>org.apache.maven:lib:tests</exclude> -->
+<!-- 		                  <exclude>log4j:log4j:jar:</exclude> -->
+<!-- 		                  <exclude>org.apache.kafka:kafka_2.10</exclude> -->
+		                </excludes>
+		            </artifactSet>
+              
+	            	<filters>
+	            		<!-- <filter>
+		                   <artifact>com.oracle:ojdbc14</artifact>
+		                   <includes>
+		                       <include>**</include>
+		                   </includes>
+		                </filter> -->
+                
+		                <filter>
+		                  <artifact>*:*</artifact>
+		                  <excludes>
+		                    <exclude>META-INF/*.SF</exclude>
+		                    <exclude>META-INF/*.DSA</exclude>
+		                    <exclude>META-INF/*.RSA</exclude>
+		                  </excludes>
+		                </filter>
+		            </filters>
+              
 	                <transformers>
 	                    <!-- <transformer  
 	                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">  

@@ -7,16 +7,20 @@ object Stat {
   
     def main(args: Array[String]) {
         
-        val conf = new SparkConf().setAppName("stock")
+        val conf = new SparkConf().setAppName("BigData")
         val sc = new SparkContext(conf)
         
-        val fpath = getClass.getClassLoader.getResource("data/000524.csv").getPath
+        val fpath = getClass.getClassLoader.getResource("data").getPath
         println("fpath= "+fpath)
         
-        val data = sc.textFile("000524", 100)
-//        val cnt = data.count()
+        val data = sc.textFile(fpath, 100)
+        data.cache()
+        
+        val cnt = data.count()
 //        
-//        println("num of data: "+cnt)
+        println("num of data: "+cnt)
+        
+        data.take(5).foreach(println)
         
         sc.stop()
     }
