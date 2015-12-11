@@ -83,12 +83,6 @@ class GreetingActor extends Actor with ActorLogging {
 }
 
 object AkkaSample {
-	
-	def getSparkContext(appName: String) = {
-        
-        val spark_conf = new SparkConf().setAppName(appName)
-        new SparkContext(spark_conf)
-    }
 
     def sayHello = {
         println("hello!")
@@ -98,7 +92,8 @@ object AkkaSample {
         println("akka, actor.")
         sayHello
         
-        val sc = getSparkContext("app")
+        val conf = new SparkConf().setAppName("app")
+        val sc = new SparkContext(conf)
 
 //        val conf = ConfigFactory.parseResources("/dev.conf")
         val system = ActorSystem("MySystem")
