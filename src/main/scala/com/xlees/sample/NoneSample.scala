@@ -87,6 +87,27 @@ object NoneSample extends App {
     val result = ("tstamp"->System.currentTimeMillis()) ~ ("data"->List(tgs)) ~ ("msg"->(None:Option[String]))
     val jvalue = render(result)
     println(pretty(jvalue))
+    
+    val m = ("name"->"abc")
+    val bm = render(m)
+    println(bm)
+    
+    val set = Map("abc"->90, "ldf"->90, "lix"->12)
+    val aset = render(set)
+    println("aset="+aset)
+    
+    val vset = ("name"->"faefef") ~ ("vset"->set)
+    val r_vset = render(vset)
+    val abc = vset\\"vset"
+    
+    println(pretty(r_vset))
+    println("abc="+abc.extract[Map[String,Int]])
+    
+    val myset = Set("a","b","c","d","e")
+    val r_myset = render(("name"->"lix") ~ ("age"->myset))
+    println(r_myset)
+    val ex= (r_myset\\"age").extract[Set[String]]
+    println(ex)
 }
 
 

@@ -15,6 +15,7 @@
   </licenses>
 
   <properties>
+  	<jdk.version>1.7</jdk.version>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <encoding>UTF-8</encoding>
@@ -23,12 +24,13 @@
   </properties>
 
   <dependencies>
-  	<dependency>
+	
+	<dependency>
 	  <groupId>org.json4s</groupId>
 	  <artifactId>json4s-jackson_2.10</artifactId>
 	  <version>3.3.0</version>
 	</dependency>
-	
+		
 	<dependency>    
         <groupId>com.oracle</groupId>    
         <artifactId>ojdbc14</artifactId>    
@@ -59,17 +61,28 @@
 		<groupId>org.apache.spark</groupId>
 		<artifactId>spark-core_2.10</artifactId>
 		<version>1.5.2</version>
-		<exclusions>  
-	        <!-- <exclusion>
-	            <artifactId>com.typesafe.akka</artifactId>  
-	            <groupId>akka-actor_2.10</groupId>  
-	        </exclusion> -->
-	        
-	        <exclusion>
-	            <artifactId>org.json4s</artifactId>  
-	            <groupId>json4s-jackson_2.10</groupId>  
-	        </exclusion>
-	    </exclusions>  
+		<exclusions>
+			<exclusion>
+				<artifactId>json4s-jackson_2.10</artifactId>
+				<groupId>org.json4s</groupId>
+			</exclusion>
+			<exclusion>
+				<artifactId>jackson-annotations</artifactId>
+				<groupId>com.fasterxml.jackson.core</groupId>
+			</exclusion>
+			<exclusion>
+				<artifactId>jackson-core</artifactId>
+				<groupId>com.fasterxml.jackson.core</groupId>
+			</exclusion>
+			<exclusion>
+				<artifactId>jackson-core-asl</artifactId>
+				<groupId>org.codehaus.jackson</groupId>
+			</exclusion>
+			<exclusion>
+				<artifactId>jackson-databind</artifactId>
+				<groupId>com.fasterxml.jackson.core</groupId>
+			</exclusion>
+		</exclusions>
 	</dependency>
 	
 	<dependency>
@@ -88,23 +101,24 @@
 		<artifactId>spark-streaming-kafka_2.10</artifactId>
 		<version>1.5.2</version>
 	</dependency>
+	
 	<dependency>
 		<groupId>org.apache.hbase</groupId>
 		<artifactId>hbase-client</artifactId>
-		<version>1.0.1.1</version>
+		<version>1.1.2</version>
 	</dependency>
 
-	<dependency>
+	<!-- <dependency>
 		<groupId>org.apache.hbase</groupId>
 		<artifactId>hbase-server</artifactId>
-		<version>1.0.1.1</version>
-	</dependency>
+		<version>1.1.2</version>
+	</dependency> -->
 
-	<dependency>
+	<!-- <dependency>
 		<groupId>org.apache.hadoop</groupId>
 		<artifactId>hadoop-hdfs</artifactId>
 		<version>2.6.0</version>
-	</dependency>
+	</dependency> -->
 	
     <dependency>
       <groupId>org.scala-lang</groupId>
@@ -138,7 +152,18 @@
     <testSourceDirectory>src/test/scala</testSourceDirectory>
     
     <plugins>
-      
+      <!-- Set a compiler level -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.3</version>
+			<configuration>
+				<source>${jdk.version}</source>
+				<target>${jdk.version}</target>
+				<encoding>UTF8</encoding> 
+			</configuration>
+		</plugin>
+			
       <!-- download sources -->
 	  <plugin>
 	       <groupId>org.apache.maven.plugins</groupId>
@@ -151,6 +176,7 @@
 	  </plugin>
       
       <plugin>
+      	  <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
           <version>2.6</version>
           <configuration>
@@ -163,6 +189,16 @@
                   <descriptorRef>jar-with-dependencies</descriptorRef>
               </descriptorRefs>
           </configuration>
+          <executions>
+			  <execution>
+				<id>make-assembly</id>
+             	<!-- bind to the packaging phase -->
+				<phase>package</phase> 
+				<goals>
+					<goal>single</goal>
+				</goals>
+			  </execution>
+		  </executions>
       </plugin>
       
     </plugins>

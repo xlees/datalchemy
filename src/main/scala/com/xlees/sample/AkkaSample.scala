@@ -10,6 +10,8 @@ import akka.actor.Props
 import akka.actor.actorRef2Scala
 import akka.pattern.pipe
 import com.typesafe.config.ConfigFactory
+import org.apache.spark.SparkConf
+import org.apache.spark.SparkContext
 
 case class StatResult(r: Int)
 
@@ -81,6 +83,12 @@ class GreetingActor extends Actor with ActorLogging {
 }
 
 object AkkaSample {
+	
+	def getSparkContext(appName: String) = {
+        
+        val spark_conf = new SparkConf().setAppName(appName)
+        new SparkContext(spark_conf)
+    }
 
     def sayHello = {
         println("hello!")
@@ -89,6 +97,8 @@ object AkkaSample {
     def main(args: Array[String]) = {
         println("akka, actor.")
         sayHello
+        
+        val sc = getSparkContext("app")
 
 //        val conf = ConfigFactory.parseResources("/dev.conf")
         val system = ActorSystem("MySystem")
@@ -101,5 +111,7 @@ object AkkaSample {
 //        greeter ! "calculate"
         
 //        system.shutdown()
+        
+        sc.stop()
     }
 }

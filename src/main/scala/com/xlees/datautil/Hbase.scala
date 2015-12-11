@@ -1,18 +1,19 @@
 package org.spark.realtime.util
 
-import org.apache.hadoop.hbase.HColumnDescriptor
-import org.apache.hadoop.hbase.Cell
-import org.apache.hadoop.hbase.client.Result
-import org.apache.hadoop.hbase.HBaseConfiguration
 import java.text.SimpleDateFormat
-import org.apache.hadoop.hbase.client.ConnectionFactory
-import org.apache.hadoop.hbase.TableName
-import org.apache.hadoop.hbase.HTableDescriptor
-import org.apache.hadoop.hbase.client.Get
-import org.apache.hadoop.hbase.util.Bytes
-import org.apache.hadoop.hbase.client.Put
-import org.apache.hadoop.hbase.InvalidFamilyOperationException
+
+import org.apache.hadoop.hbase.Cell
 import org.apache.hadoop.hbase.CellUtil
+import org.apache.hadoop.hbase.HBaseConfiguration
+import org.apache.hadoop.hbase.HColumnDescriptor
+import org.apache.hadoop.hbase.HTableDescriptor
+import org.apache.hadoop.hbase.InvalidFamilyOperationException
+import org.apache.hadoop.hbase.TableName
+import org.apache.hadoop.hbase.client.ConnectionFactory
+import org.apache.hadoop.hbase.client.Get
+import org.apache.hadoop.hbase.client.Put
+import org.apache.hadoop.hbase.client.Result
+import org.apache.hadoop.hbase.util.Bytes
 
 /**
  * @author Xiang
