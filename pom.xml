@@ -1,8 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
   <groupId>com.xlees</groupId>
   <artifactId>datalchemy</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
   <name>${project.artifactId}</name>
   <description>My wonderfull scala app</description>
   <inceptionYear>2010</inceptionYear>
@@ -114,12 +116,6 @@
 		<version>1.1.2</version>
 	</dependency> -->
 
-	<!-- <dependency>
-		<groupId>org.apache.hadoop</groupId>
-		<artifactId>hadoop-hdfs</artifactId>
-		<version>2.6.0</version>
-	</dependency> -->
-	
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
@@ -174,8 +170,40 @@
 	         <downloadJavadocs>true</downloadJavadocs>
 	       </configuration>
 	  </plugin>
+	  
+	  <plugin>  
+	    <groupId>org.apache.maven.plugins</groupId>  
+	    <artifactId>maven-shade-plugin</artifactId>  
+	    <version>2.4.2</version>  
+	    <executions>  
+	        <execution>  
+	            <phase>package</phase>  
+	            <goals>  
+	                <goal>shade</goal>  
+	            </goals>  
+	            <configuration>  
+	                <transformers>
+	                    <!-- <transformer  
+	                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">  
+	                        <resource>META-INF/spring.handlers</resource>  
+	                    </transformer>  -->
+	                    
+	                    <transformer  
+	                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">  
+	                        <mainClass>com.xlees.sample.NoneSample</mainClass>  
+	                    </transformer>  
+	                    
+	                    <!-- <transformer  
+	                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">  
+	                        <resource>META-INF/spring.schemas</resource>  
+	                    </transformer>   -->
+	                </transformers>  
+	            </configuration>  
+	        </execution>  
+	    </executions>  
+	</plugin>  
       
-      <plugin>
+      <!-- <plugin>
       	  <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
           <version>2.6</version>
@@ -192,14 +220,14 @@
           <executions>
 			  <execution>
 				<id>make-assembly</id>
-             	<!-- bind to the packaging phase -->
+             	bind to the packaging phase
 				<phase>package</phase> 
 				<goals>
 					<goal>single</goal>
 				</goals>
 			  </execution>
 		  </executions>
-      </plugin>
+      </plugin> -->
       
     </plugins>
   </build>

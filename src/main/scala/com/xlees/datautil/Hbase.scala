@@ -1,4 +1,4 @@
-package org.spark.realtime.util
+package com.xlees.datautil
 
 import java.text.SimpleDateFormat
 
