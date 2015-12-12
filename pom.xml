@@ -140,8 +140,77 @@
 	<build>
 		<sourceDirectory>src/main/scala</sourceDirectory>
 		<testSourceDirectory>src/test/scala</testSourceDirectory>
-
+		
+		<resources>
+	        <resource>
+	            <directory>src/main/resources</directory>
+	        </resource>
+	        <resource>
+	            <directory>src/main/config</directory>
+	        </resource>
+	    </resources>
+		
 		<plugins>
+			<plugin>
+		        <artifactId>maven-resources-plugin</artifactId>
+		        <version>2.7</version>
+		        <executions>
+		          <execution>
+		            <id>copy-conf</id>
+		            <phase>validate</phase>
+		            <goals>
+		              <goal>copy-resources</goal>
+		            </goals>
+		            
+		            <configuration>
+		              <outputDirectory>${basedir}/target/conf</outputDirectory>
+		              <resources>         
+		                <resource>
+		                  <directory>src/main/config</directory>
+		                  <filtering>true</filtering>
+		                </resource>
+		              </resources>              
+		            </configuration>            
+		          </execution>
+		          <!-- logs -->
+		          <execution>
+		            <id>copy-logs</id>
+		            <phase>validate</phase>
+		            <goals>
+		              <goal>copy-resources</goal>
+		            </goals>
+		            
+		            <configuration>
+		              <outputDirectory>${basedir}/target/logs</outputDirectory>
+		              <resources>         
+		                <resource>
+		                  <directory>logs</directory>
+		                  <filtering>true</filtering>
+		                </resource>
+		              </resources>              
+		            </configuration>            
+		          </execution>
+		          <!-- data -->
+		          <execution>
+		            <id>copy-data</id>
+		            <phase>validate</phase>
+		            <goals>
+		              <goal>copy-resources</goal>
+		            </goals>
+		            
+		            <configuration>
+		              <outputDirectory>${basedir}/target/data</outputDirectory>
+		              <resources>         
+		                <resource>
+		                  <directory>src/main/resources/data</directory>
+		                  <filtering>true</filtering>
+		                </resource>
+		              </resources>              
+		            </configuration>            
+		          </execution>
+		        </executions>
+		    </plugin>
+		    
 			<!-- Set a compiler level -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -230,13 +299,18 @@
 							</filters>
 
 							<transformers>
-								<!-- <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer"> 
-									<resource>META-INF/spring.handlers</resource> </transformer> -->
-
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<mainClass>com.xlees.sample.NoneSample</mainClass>
 								</transformer>
+								
+								<transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+			                    	<resource>.txt</resource>
+			                    </transformer>
+			                    
+			                    <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+			                    	<resource>.csv</resource>
+			                    </transformer>
 							</transformers>
 						</configuration>
 					</execution>
