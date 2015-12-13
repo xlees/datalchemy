@@ -141,13 +141,10 @@
               </filters>
               <transformers>
                 <transformer>
-                  <mainClass>com.xlees.sample.NoneSample</mainClass>
+                  <mainClass>com.xlees.sample.BaseDir</mainClass>
                 </transformer>
                 <transformer>
                   <resource>.txt</resource>
-                </transformer>
-                <transformer>
-                  <resource>.csv</resource>
                 </transformer>
               </transformers>
             </configuration>
