@@ -2,13 +2,13 @@ package com.xlees.strat
 
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
-
 import org.apache.spark.Partitioner
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.rdd.RDD.rddToPairRDDFunctions
 import org.joda.time.DateTime
+import scala.collection.mutable.ArrayBuffer
 
 
 case class Row(date: String, code: String, time:String,
@@ -36,56 +36,84 @@ object Stat {
 		x+1
 	}
 	
-	def calcTimeSpan(tseries: Array[Row]): Double = {
-		
-		val index = locPeek(tseries.map(_.price))
+	def calcTimeSpan(tseries: Array[Row]): (String,Double) = {
+	    val open_time = "09:30:00"
+	    
+	    val _tseries = tseries.sortBy(_.time)
+	    
+		val index = locPeek(_tseries.map(_.price))
 		if (index < 0)
-			86400.0
+			("15:00:00",1440.0)
+		else if (index == 0)
+		    (open_time, 0.0)
 		else {
 			
-			val row = tseries(index)
-		
-			val datetime = new DateTime(row.date+"T"+row.time).getMillis
-			val base = new DateTime(row.date+"T"+"09:30:00").getMillis
+			val row = _tseries(index)
+//			println("row="+row)
 			
-			(datetime-base) / 1000.0
+			val datetime = new DateTime(row.date+"T"+row.time).getMillis
+			val base = new DateTime(row.date+"T"+open_time).getMillis
+			
+			val time = (datetime-base) / 60000.0
+			if (time>120.0) ("11:30:00",120.0) else (row.time,time)
 		}
 	}
 	
+	def testCalc() = {
+	    val code = "002468"
+	    val fname = getClass.getClassLoader.getResource(s"sdata/$code.csv").getPath
+	    val dataSet = Source.fromFile(fname).getLines()
+	                        .map(x => {
+	                            val arr = x.split(",")
+  						 	  
+      						 	  Row(arr(0), arr(1), arr(2),
+      						 	 	  arr(3).toInt, arr(4).toDouble,
+      						 	 	  arr(5).toInt, arr(6).toLong)
+	                        })
+	                        .filter(_.date=="2015-12-17")
+	                        .toArray
+	                        
+        val result = calcTimeSpan(dataSet)
+        println(code+": "+result)
+	}
+	
 	def locPeek(tick: Array[Double]): Int = {
+		// test
+//	    tick.take(20).foreach(println)
+	    
+	    val trade = tick.last
+	    
+//		val diff = tick.sliding(2)
+//						.map(x => Math.abs(x(1)-x(0)))
+//						.toList
+	    val diff = tick.map(x => Math.abs(x-trade)).zipWithIndex
 		
-		val diff = tick.sliding(2)
-						.map(x => Math.abs(x(1)-x(0)))
-						.toList
-						
-		val top = new ListBuffer[(Int,Int)]()
-		var start = 0
-		var end = -1
-		for (i <- (1 until diff.size)) {
-			
-			if (diff(i) > 0.009) {
-				if (end >= start) {
-					top += ((start,end+1))
-					start = 0
-					end = -1
-				}
-			}
-			else {
-				if (end>=start)
-					end += 1
-				else {
-					end = i
-					start = i
-				}
-			}
+		val index = for {
+		    e <- diff
+		    if (e._1 < 0.001)
+		} yield {
+		    e._2
 		}
-		if (end >= start)
-			top += ((start,end+1))
-			
+		
+		var beg = 0
+		var cur = index(0)-1
+		val top = new ListBuffer[(Int,Int)]()
+		for (x <- index.zipWithIndex) {
+		    if ((cur+1) == x._1)
+		        cur += 1
+		    else {
+		        if (x._2 > (beg+1))
+		            top += ((index(beg), index(x._2-1)))
+		        beg = x._2
+		        cur = x._1
+		    }
+		}
+		top += ((index(beg),cur))
+		
 //		println("arr size: "+top.size)
 		
 		if (top.size > 0)
-			top.toList.map(x=>(x._2-x._1)).zipWithIndex.max._2
+			top.toList.map(x=>(x._2-x._1, x._1)).max._2
 		else
 			-1
 	}
@@ -110,32 +138,50 @@ object Stat {
 		
 		println("part: "+part.numPartitions)
 		
-		val rdd = dframe.map(x => {
-			val key = (x.date,x.code,x.time)
-			val value = (x.dtype,x.price,x.volume,x.amount)
-			
-			(key,value)
+//		val rdd = dframe.map(x => {
+//			val key = (x.date,x.code,x.time)
+//			val value = (x.dtype,x.price,x.volume,x.amount)
+//			
+//			(key,value)
+//		})
+//		// 去掉空分区
+//			.partitionBy(part)
+//			.glom()
+//			.filter(_.size>0)
+		
+		val rdd = dframe.coalesce(10).map(x => {
+			val key = (x.date,x.code)
+			(key,x)
+		}).aggregateByKey(new ArrayBuffer[Row]())(_ += _, _ ++ _)
+		.map(x => {
+		    (x._1, calcTimeSpan(x._2.toArray))
 		})
-		// 去掉空分区
-			.partitionBy(part)
-			.glom()
-			.filter(_.size>0)
+		.sortBy(x => x._1._1)
 		rdd.cache()
 		
-		// do something
-		val result = rdd.map(x => {
-				
-			val arr = x.map(e => {
-				Row(e._1._1, e._1._2, e._1._3,
-					e._2._1, e._2._2, e._2._3, e._2._4)
-			})
-			
-			((x(0)._1._2,x(0)._1._1), calcTimeSpan(arr))
+//		rdd.collect().foreach(println)
+		rdd.map(x => {
+		  (x._1._1, (x._1._2,x._2._1,x._2._2))
 		})
+		    .aggregateByKey(new ListBuffer[(String,String,Double)]())(_+=_,_++_)
+		    .map(x=> { (x._1, x._2.filter(_._3<120.0).toList) })
+		    .sortBy(_._1, true, 1)
+		    .saveAsTextFile("result")
 		
-		val r = result.collect()
-		println("size of result: "+r.size)
-		r.foreach(println)
+		// do something
+//		val result = rdd.map(x => {
+//				
+//			val arr = x.map(e => {
+//				Row(e._1._1, e._1._2, e._1._3,
+//					e._2._1, e._2._2, e._2._3, e._2._4)
+//			})
+//			
+//			((x(0)._1._2,x(0)._1._1), calcTimeSpan(arr))
+//		})
+//		
+//		val r = result.collect()
+//		println("size of result: "+r.size)
+//		r.foreach(println)
 		
 //		println("num of partitions: "+rdd.partitions.size)
 //		println(rdd.partitioner.get.getClass)
@@ -191,6 +237,7 @@ object Stat {
         println("fpath= "+fpath)
         
         peek(sc)
+//        testCalc
         
 //        val data = sc.textFile(fpath, 100)
 //        data.cache()
@@ -223,8 +270,6 @@ object Stat {
 //        println("num of data: "+cnt)
         
         Thread.sleep(5)
-        
-//        data.take(5).foreach(println)
         
         sc.stop()
     }
