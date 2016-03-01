@@ -5,8 +5,8 @@ import java.io.FileInputStream
 import java.sql.DriverManager
 import org.slf4j.LoggerFactory
 import java.sql.ResultSet
-import org.specs2.internal.scalaz.std.effect.sql.resultSet
-import java.sql.ResultSetMetaData
+//import org.specs2.internal.scalaz.std.effect.sql.resultSet
+//import java.sql.ResultSetMetaData
 import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import scala.util.{Try, Success, Failure}

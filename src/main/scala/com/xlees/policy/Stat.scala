@@ -1,4 +1,4 @@
-package com.xlees.strat
+package com.xlees.policy
 
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
@@ -221,6 +221,13 @@ object Stat {
 //  		println("size: "+rdd1.count())
 //		res.foreach(x=>println(x))
 	}
+
+	def reader(sc: SparkContext) = {
+
+			val stock = sc.textFile(System.getenv("data_home")+"stocks\\300212.csv", 10)
+			val cnt = stock.count()
+			println("total "+cnt+" ticks.")
+	}
   
     def main(args: Array[String]) {
         
@@ -235,8 +242,10 @@ object Stat {
         
         val fpath = getClass.getClassLoader.getResource("sdata").getPath
         println("fpath= "+fpath)
-        
-        peek(sc)
+
+				reader(sc)
+
+//        peek(sc)
 //        testCalc
         
 //        val data = sc.textFile(fpath, 100)
@@ -269,8 +278,10 @@ object Stat {
 //        
 //        println("num of data: "+cnt)
         
-        Thread.sleep(5)
-        
+//        Thread.sleep(5)
+
+				println(System.getenv("data_home"))
+
         sc.stop()
     }
 }
